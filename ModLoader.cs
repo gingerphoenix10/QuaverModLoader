@@ -3,23 +3,25 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using MonoMod;
-using Quaver.Shared.Database.Maps;
-using Quaver.API.Maps;
-using Wobble.Screens;
-using Quaver.Shared.Screens.Loading;
-using Quaver.Shared.Database.Scores;
 using System.Runtime.InteropServices;
 
-namespace Wobble
+namespace Microsoft.Xna.Framework
 {
-    public class patch_WobbleGame
+    public class patch_Game
     {
-        public extern void orig_Initialize();
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool AllocConsole();
+        public extern void orig_Run();
         public virtual extern void orig_MoveNext();
 
-        public void patch_Initialize()
+        public void patch_Run()
         {
-            orig_Initialize();
+            AllocConsole();
+            var stdOut = Console.OpenStandardOutput();
+            var writer = new StreamWriter(stdOut) { AutoFlush = true };
+            Console.SetOut(writer);
+            Console.SetError(writer);
+            Console.SetIn(new StreamReader(Console.OpenStandardInput()));
 
             string pluginDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "QuaverPlugins");
 
@@ -30,16 +32,11 @@ namespace Wobble
             {
                 try
                 {
-                    var raw = File.ReadAllBytes(dll);
-                    var assembly = Assembly.Load(raw);
+                    var loadContext = new PluginLoadContext(dll);
+                    var assembly = loadContext.LoadFromAssemblyPath(dll);
 
-                    // Look for a type named "Plugin"
                     var pluginType = assembly.GetType("Plugin");
-
-                    // If found, look for a public static method called Initialize
                     var initializeMethod = pluginType?.GetMethod("Initialize", BindingFlags.Public | BindingFlags.Static);
-
-                    // Invoke if it exists
                     initializeMethod?.Invoke(null, null);
                 }
                 catch (Exception ex)
@@ -47,6 +44,10 @@ namespace Wobble
                     Console.WriteLine($"Failed to load plugin {dll}: {ex}");
                 }
             }
+
+
+            orig_Run();
+
         }
 
     }

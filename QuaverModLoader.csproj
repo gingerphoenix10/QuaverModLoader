@@ -5,24 +5,21 @@
     <RootNamespace>Rhythm_Remix</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>Wobble.ModLoader.mm</AssemblyName>
+    <AssemblyName>MonoGame.Framework.ModLoader.mm</AssemblyName>
     <QUAVERDir Condition=" '$(QUAVERDir)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\Quaver</QUAVERDir>
   </PropertyGroup>
 
   <ItemGroup>
 	<Reference Include="MonoMod/*.dll" />
-    <Reference Include="$(QUAVERDir)/Quaver.dll" />
-    <Reference Include="$(QUAVERDir)/Quaver.Shared.dll" />
-    <Reference Include="$(QUAVERDir)/Quaver.API.dll" />
-    <Reference Include="$(QUAVERDir)/Wobble.dll" />
+	<Reference Include="$(QUAVERDir)/MonoGame.Framework.dll" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="$(QUAVERDir)" />
-    <Exec Command='MonoMod\MonoMod.exe "$(QUAVERDir)\Wobble.dll"' />
-    <Exec Command="if not exist &quot;$(QUAVERDir)\BaseWobble.dll&quot; if exist &quot;$(QUAVERDir)\Wobble.dll&quot; ren &quot;$(QUAVERDir)\Wobble.dll&quot; BaseWobble.dll" />
-    <Exec Command="if exist &quot;$(QUAVERDir)\Wobble.dll&quot; del &quot;$(QUAVERDir)\Wobble.dll&quot;" />
-    <Exec Command="ren &quot;$(QUAVERDir)\MONOMODDED_Wobble.dll&quot; Wobble.dll" />
+    <Exec Command='MonoMod\MonoMod.exe "$(QUAVERDir)\MonoGame.Framework.dll"' />
+    <Exec Command="if not exist &quot;$(QUAVERDir)\BaseMonoGame.Framework.dll&quot; if exist &quot;$(QUAVERDir)\MonoGame.Framework.dll&quot; ren &quot;$(QUAVERDir)\MonoGame.Framework.dll&quot; BaseMonoGame.Framework.dll" />
+    <Exec Command="if exist &quot;$(QUAVERDir)\MonoGame.Framework.dll&quot; del &quot;$(QUAVERDir)\MonoGame.Framework.dll&quot;" />
+    <Exec Command="ren &quot;$(QUAVERDir)\MONOMODDED_MonoGame.Framework.dll&quot; MonoGame.Framework.dll" />
   </Target>
 
 </Project>
