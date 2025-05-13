@@ -1,0 +1,2 @@
+# Quaver Mod Loader
+An extremely simple plugin loader for [Quaver](https://store.steampowered.com/app/980610/Quaver/) (or any other game made using Quaver's [Wobble](https://github.com/Quaver/Wobble) framework) made for the [Rhythm Remix](https://github.com/Rhythm-Remix) project.
