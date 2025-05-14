@@ -35,7 +35,7 @@ namespace Microsoft.Xna.Framework
                     var loadContext = new PluginLoadContext(dll);
                     var assembly = loadContext.LoadFromAssemblyPath(dll);
 
-                    var pluginType = assembly.GetType("Plugin");
+                    var pluginType = assembly.GetType("QuaverPlugin");
                     var initializeMethod = pluginType?.GetMethod("Initialize", BindingFlags.Public | BindingFlags.Static);
                     initializeMethod?.Invoke(null, null);
                 }
